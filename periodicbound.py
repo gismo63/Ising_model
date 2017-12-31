@@ -5,12 +5,13 @@ import numpy as np
 import random
 
 J=1
-columns=100
-rows=100
+columns=1000
+rows=1000
 k_b=1
-T=1
+T=8
+h=1
 
-iterations=50
+iterations=1000
 
 isingmat = np.zeros((rows,columns))
 
@@ -25,7 +26,7 @@ deltaE = np.zeros((rows,columns))
 for i in range(iterations):
 	for i in range(rows):
 		for j in range(columns):
-			deltaE[i][j]=2*J*isingmat[i][j]*(isingmat[i-1][j]+isingmat[(i+1) % (rows)][j]+isingmat[i][j-1]+isingmat[i][(j+1) % (columns)])
+			deltaE[i][j]=-2*J*isingmat[i][j]*(isingmat[i-1][j]+isingmat[(i+1) % (rows)][j]+isingmat[i][j-1]+isingmat[i][(j+1) % (columns)])-2*h*isingmat[i][j]
 
 	p_flip = np.exp((-deltaE)/(k_b*T))
 
@@ -33,7 +34,9 @@ for i in range(iterations):
 		for j in range(columns):
 			if p_flip[i][j]>random.random():
 				isingmat[i][j]*=-1
-print p_flip
 
-plt.imshow(isingmat)
+print p_flip
+print isingmat
+
+plt.imshow(isingmat,cmap='Greys')
 plt.show()
