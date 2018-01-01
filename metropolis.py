@@ -7,7 +7,7 @@ import random
 J=1.
 columns=200
 rows=200
-T=10
+T=2.3
 h=0
 
 iterations=10000000
@@ -40,11 +40,12 @@ while k < iterations:
 	equilib.append(spin_change)
 	k+=1
 
-plt.plot(np.array(equilib)*1e-5)
+equilib = equilib[::100]
 
-plt.figure()
+plt.plot(equilib)
 
-plt.plot(np.exp(np.array(equilib)*1e-5))
+
+#plt.plot(np.exp(np.array(equilib)*1e-5))
 
 plt.figure()
 
