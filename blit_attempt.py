@@ -12,8 +12,8 @@ from matplotlib import animation
 start_time = time.time()
 
 J=1.
-columns=50
-rows=50
+columns=200
+rows=200
 T=1.
 h=0
 
@@ -56,17 +56,21 @@ while k < iterations:
 
 equilib = equilib[::iterations/10000]
 
+
+
+
 fig=plt.figure()
 
-ani = animation.ArtistAnimation(fig, img, interval = 1, blit = True, repeat_delay = 1000)
+ani = animation.ArtistAnimation(fig, img, interval = 0, blit = True, repeat_delay = 1000)
 
-ani.save('test.mp4')
+
+
 
 print isingmat
 
-
-
-
 plt.plot(equilib)
+
+
+
 print "%s seconds" % (time.time() - start_time)
 plt.show()
