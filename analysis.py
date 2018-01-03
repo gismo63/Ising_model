@@ -58,6 +58,13 @@ def metrop(isingmat, iterations, neg_beta):
 def mag(matrix):
 	return abs(np.mean(matrix))
 
+def tot_energy(matrix):
+	tot_e = 0
+	for i in range(rows):
+		for j in range(columns):
+			tot_e += -1*(J*isingmat[i][j]*(isingmat[i-1][j]+isingmat[i][j-1])+h*isingmat[i][j])#each pair of sites should be counted only once
+	return tot_e
+
 
 magnetization = []
 
