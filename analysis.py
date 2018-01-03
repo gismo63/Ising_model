@@ -19,7 +19,7 @@ dt=0.1
 T_array=np.arange(dt,4,dt)
 h=0
 
-iterations=1000000
+iterations=100000
 
 isingmat = np.random.choice([-1,1],size=(rows,columns))
 
@@ -33,7 +33,7 @@ isingmat = np.random.choice([-1,1],size=(rows,columns))
 
 
 
-def metrop(isingmat, iterations, T):
+def metrop(isingmat, iterations, neg_beta):
 	k=0
 	while k < iterations:
 	
@@ -45,7 +45,7 @@ def metrop(isingmat, iterations, T):
 		if deltaE<=0:
 			isingmat[i][j] *= -1
 			#spin_change += 1
-		elif random.random() < np.exp(-deltaE/T):
+		elif random.random() < np.exp(deltaE*neg_beta):
 			isingmat[i][j] *= -1
 			#spin_change += 1
 		#equilib.append(spin_change)
@@ -54,20 +54,6 @@ def metrop(isingmat, iterations, T):
 			#img.append([plt.imshow(isingmat,cmap='Greys')])
 	return isingmat
 
-def sweep(matrix, iterations, T):
-	deltaE = np.zeros((rows,columns))
-	for k in range(iterations):
-		for i in range(rows):
-			for j in range(columns):
-				deltaE[i][j]=-2*J*matrix[i][j]*(matrix[i-1][j]+matrix[(i+1) % (rows)][j]+matrix[i][j-1]+matrix[i][(j+1) % (columns)])-2*h*matrix[i][j]
-
-		p_flip = np.exp((-deltaE)/(T))
-
-		for i in range(rows):
-			for j in range(columns):
-				if p_flip[i][j]>random.random():
-					matrix[i][j]*=-1
-	return matrix
 
 def mag(matrix):
 	return abs(np.mean(matrix))
