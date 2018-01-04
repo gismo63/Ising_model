@@ -8,22 +8,7 @@ from matplotlib import animation
 
 
 
-
-start_time = time.time()
-
-J=1.
-columns=12
-rows=12
-
-dt=0.1
-T_array=np.arange(dt,4,dt)
-h=0
-
-iterations=100000
-
-isingmat = np.random.choice([-1,1],size=(rows,columns))
-
-#im = plt.imshow(isingmat,cmap='Greys', animated=True)
+#im = plt.imshow(initial_matrix,cmap='Greys', animated=True)
 
 
 #spin_change=0
@@ -33,26 +18,26 @@ isingmat = np.random.choice([-1,1],size=(rows,columns))
 
 
 
-def metrop(isingmat, iterations, neg_beta):
+def metrop(matrix, iterations, neg_beta):
 	k=0
 	while k < iterations:
 	
 		i = np.random.randint(0,rows)
 		j = np.random.randint(0,columns)
 	
-		deltaE=2*J*isingmat[i][j]*(isingmat[i-1][j]+isingmat[(i+1) % (rows)][j]+isingmat[i][j-1]+isingmat[i][(j+1) % (columns)])+2*h*isingmat[i][j]
+		deltaE=2*J*matrix[i][j]*(matrix[i-1][j]+matrix[(i+1) % (rows)][j]+matrix[i][j-1]+matrix[i][(j+1) % (columns)])+2*h*matrix[i][j]
 
 		if deltaE<=0:
-			isingmat[i][j] *= -1
+			matrix[i][j] *= -1
 			#spin_change += 1
 		elif random.random() < np.exp(deltaE*neg_beta):
-			isingmat[i][j] *= -1
+			matrix[i][j] *= -1
 			#spin_change += 1
 		#equilib.append(spin_change)
 		k+=1
 		#if k%10000 == 0:
-			#img.append([plt.imshow(isingmat,cmap='Greys')])
-	return isingmat
+			#img.append([plt.imshow(matrix,cmap='Greys')])
+	return matrix
 
 
 def mag(matrix):
@@ -62,17 +47,51 @@ def tot_energy(matrix):
 	tot_e = 0
 	for i in range(rows):
 		for j in range(columns):
-			tot_e += -1*(J*isingmat[i][j]*(isingmat[i-1][j]+isingmat[i][j-1])+h*isingmat[i][j])#each pair of sites should be counted only once
+			tot_e += -1*(J*matrix[i][j]*(matrix[i-1][j]+matrix[i][j-1])+h*matrix[i][j])#each pair of sites should be counted only once
 	return tot_e
 
 
-magnetization = []
 
-for t in T_array:
-	f_matrix = metrop(isingmat, iterations, t)
-	magnetization.append(mag(f_matrix))
+start_time = time.time()
+
+J=1.
+columns=16
+rows=16
+h=0
+T_c=2.2692
+steps=5*10**2
+averageing_steps = 10**2
+
+T_array = np.random.normal(T_c, 0.5, 300)
+T_array = T_array[(T_array>1.5) & (T_array<3.5)]
+num_temps = len(T_array)
+
+energy = magnetization = specheat = magsuscep = np.zeros(num_temps)
+
+
+
+initial_matrix = np.random.choice([-1,1],size=(rows,columns))
+
+
+for i in range(num_temps):
+	E = M = np.zeros(averageing_steps)
+	f_matrix = metrop(initial_matrix, steps, T_array[i])
+	
+	for j in range(averageing_steps):
+		f_matrix = metrop(f_matrix, averageing_steps, T_array[i])
+		E[j] = tot_energy(f_matrix)
+		M[j] = mag(f_matrix)
+	energy[i] = np.sum(E)
+	magnetization[i] = np.sum(M)
+
+energy = energy/(rows*columns*averageing_steps)
+magnetization = magnetization/(rows*columns*averageing_steps)
 	
 plt.plot(T_array, magnetization, 'o')
+
+plt.figure()
+
+plt.plot(T_array, energy, 'o')
 #equilib = equilib[::iterations/10000]
 
 
