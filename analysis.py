@@ -59,14 +59,17 @@ columns=16
 rows=16
 h=0
 T_c=2.2692
-steps=5*10**2
-averageing_steps = 10**2
+steps=10**6
+averageing_steps = 10**5
 
 T_array = np.random.normal(T_c, 0.5, 300)
 T_array = T_array[(T_array>1.5) & (T_array<3.5)]
 num_temps = len(T_array)
 
-energy = magnetization = specheat = magsuscep = np.zeros(num_temps)
+energy = np.zeros(num_temps)
+magnetization = np.zeros(num_temps)
+specheat = np.zeros(num_temps)
+magsuscep = np.zeros(num_temps)
 
 
 
@@ -74,24 +77,41 @@ initial_matrix = np.random.choice([-1,1],size=(rows,columns))
 
 
 for i in range(num_temps):
-	E = M = np.zeros(averageing_steps)
-	f_matrix = metrop(initial_matrix, steps, T_array[i])
+	neg_beta = -1./T_array[i]
+	E = np.zeros(averageing_steps)
+	M = np.zeros(averageing_steps)
+	f_matrix = metrop(initial_matrix, steps, neg_beta)
 	
 	for j in range(averageing_steps):
-		f_matrix = metrop(f_matrix, averageing_steps, T_array[i])
+		f_matrix = metrop(f_matrix, rows*columns, neg_beta)
 		E[j] = tot_energy(f_matrix)
 		M[j] = mag(f_matrix)
 	energy[i] = np.sum(E)
 	magnetization[i] = np.sum(M)
+	specheat[i] = np.sum(E*E) - np.sum(E)*np.sum(E)/averageing_steps
+	magsuscep[i] = np.sum(M*M) - np.sum(M)*np.sum(M)/averageing_steps
 
-energy = energy/(rows*columns*averageing_steps)
-magnetization = magnetization/(rows*columns*averageing_steps)
+c = rows*columns*averageing_steps
+
+energy = energy / (c)
+magnetization = magnetization / (c)
+specheat = (specheat / (T**2)) / (c)
+magsuscep = (magsuscep / (T)) / (c)
 	
 plt.plot(T_array, magnetization, 'o')
 
 plt.figure()
 
 plt.plot(T_array, energy, 'o')
+
+plt.figure()
+
+plt.plot(T_array, specheat, 'o')
+
+plt.figure()
+
+plt.plot(T_array, magsuscep, 'o')
+
 #equilib = equilib[::iterations/10000]
 
 
