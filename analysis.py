@@ -41,7 +41,7 @@ def metrop(matrix, iterations, neg_beta):
 
 
 def mag(matrix):
-	return abs(np.mean(matrix))
+	return np.sum(matrix)
 
 def tot_energy(matrix):
 	tot_e = 0
@@ -55,12 +55,12 @@ def tot_energy(matrix):
 start_time = time.time()
 
 J=1.
-columns=16
-rows=16
+columns=8
+rows=8
 h=0
 T_c=2.2692
-steps=10**6
-averageing_steps = 10**5
+steps=2**16
+averageing_steps = 2**8
 
 T_array = np.random.normal(T_c, 0.5, 300)
 T_array = T_array[(T_array>1.5) & (T_array<3.5)]
@@ -87,7 +87,7 @@ for i in range(num_temps):
 		E[j] = tot_energy(f_matrix)
 		M[j] = mag(f_matrix)
 	energy[i] = np.sum(E)
-	magnetization[i] = np.sum(M)
+	magnetization[i] = abs(np.sum(M))
 	specheat[i] = np.sum(E*E) - np.sum(E)*np.sum(E)/averageing_steps
 	magsuscep[i] = np.sum(M*M) - np.sum(M)*np.sum(M)/averageing_steps
 
@@ -95,8 +95,8 @@ c = rows*columns*averageing_steps
 
 energy = energy / (c)
 magnetization = magnetization / (c)
-specheat = (specheat / (T**2)) / (c)
-magsuscep = (magsuscep / (T)) / (c)
+specheat = (specheat / (T_array**2)) / (c)
+magsuscep = (magsuscep / (T_array)) / (c)
 	
 plt.plot(T_array, magnetization, 'o')
 
