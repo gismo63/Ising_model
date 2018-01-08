@@ -23,10 +23,10 @@ def metrop(matrix, iterations, neg_beta):
     while k < iterations:
         i = np.random.randint(0,N)
         j = np.random.randint(0,N)
-        if j%2:
-            deltaE=2*(J*matrix[i][j]*(matrix[i-1][j]+matrix[(i+1)%N][j]+matrix[(i+1)%N][j-1]+matrix[i][j-1]+matrix[i][(j+1)%N]+matrix[(i+1)%N][(j+1)%N])+h*matrix[i][j])
+        if i%2:
+            deltaE=2*(J*matrix[i][j]*(matrix[i][j-1]+matrix[i][(j+1)%N]+matrix[i-1][(j+1)%N]+matrix[i-1][j]+matrix[(i+1)%N][(j+1)%N]+matrix[(i+1)%N][j])+h*matrix[i][j])
         else:
-            deltaE=2*(J*matrix[i][j]*(matrix[i-1][j]+matrix[(i+1)%N][j]+matrix[i-1][j-1]+matrix[i][j-1]+matrix[i][(j+1)%N]+matrix[i-1][(j+1)%N])+h*matrix[i][j])
+            deltaE=2*(J*matrix[i][j]*(matrix[i][j-1]+matrix[i][(j+1)%N]+matrix[i-1][j-1]+matrix[i-1][j]+matrix[(i+1)%N][j-1]+matrix[(i+1)%N][j])+h*matrix[i][j])
         if deltaE<=0:
             matrix[i][j] *= -1
             #spin_change += 1
