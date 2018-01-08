@@ -13,15 +13,15 @@ from matplotlib import animation
 start_time = time.time()
 
 J=1.
-N=20
+N=30
 N2=2*N
 T=1.
 h=0
 neg_beta = -1./T
 
-frames = 2**2
+frames = 2**8
 
-iterations=2**4
+iterations=2**16
 
 matrix = np.random.choice([-1,1],size=(N,N))
 i_mat = matrix
@@ -43,11 +43,11 @@ patches = []
 
 for i in range(N):
     for j in range(N2):
-        patches.append(plt.Circle((j,i), radius=.3, lw=2, ec="black", facecolor=None))
+        patches.append(plt.Circle((j,i), radius=.5, facecolor=None))
         
 def init():
     #Draw background
-    im = plt.imshow(np.zeros((N,N2)), animated=True)
+    plt.imshow(np.zeros((N,N2)), animated=True)
     axes = plt.gca()
     axes.autoscale(False)
 
@@ -61,18 +61,18 @@ def colour_matrix(isingmat):
 	
 	
 def animate(n):
-	i=0
-	j=0
-	for i in range(N):
-		for j in range(N2):
-			if (i+j)%2:
-				patches[i*N2 + j].set_visible(False)
-			else:
-				patches[i*N2 + j].set_facecolor(str(colours[n][i][j/2]))
-				patches[i*N2 + j].set_visible(True)
-	return patches
+    i=0
+    j=0
+    for i in range(N):
+        for j in range(N2):
+            if (i+j)%2:
+                patches[i*N2 + j].set_visible(False)
+            else:
+                patches[i*N2 + j].set_facecolor(str(colours[n][i][j/2]))
+                patches[i*N2 + j].set_visible(True)
+    return patches
 
-
+count = 0
 while k < iterations:
     i = np.random.randint(0,N)
     j = np.random.randint(0,N)
@@ -86,10 +86,13 @@ while k < iterations:
     elif random.random() < np.exp(deltaE*neg_beta):
         matrix[i][j] *= -1
         spin_change += 1
- 	equilib.append(spin_change)
-  	k+=1
-   	if k%(iterations/frames) == 0:
-   		img[frames/k] = matrix
+    equilib.append(spin_change)
+    k+=1
+    if k%(iterations/frames) == 0:
+        img[count] = matrix
+        count +=1
+        
+print frames - count
 
 
 #equilib = equilib[::iterations/10000]
@@ -101,7 +104,7 @@ for i in range(len(img)):
 
 
 
-anim = animation.FuncAnimation(fig, animate, init_func=init, frames=len(img), blit=True)
+anim = animation.FuncAnimation(fig, animate, init_func=init, frames=len(img), interval = 1, blit=True)
 
 #anim.save('test.mp4', writer="ffmpeg", fps=2)
 
