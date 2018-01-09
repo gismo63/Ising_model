@@ -8,12 +8,12 @@ import time
 start_time = time.time()
 
 J=1.
-columns=30
-rows=30
-T=2.2
+columns=50
+rows=50
+T=1.
 h=0
 
-iterations=1000000
+iterations=2**16
 
 isingmat = np.random.choice([-1,1],size=(rows,columns))
 
@@ -26,28 +26,26 @@ i=0
 j=0
 spin_change=0
 equilib = []
+neg_beta = -1./T
+
 
 
 while k < iterations:
+    i = np.random.randint(0,rows)
+    j = np.random.randint(0,columns)
 	
-	i = random.choice(np.arange(rows))
-	j = random.choice(np.arange(columns))
-	
-	deltaE=2*J*isingmat[i][j]*(isingmat[i-1][j]+isingmat[(i+1) % (rows)][j]+isingmat[i][j-1]+isingmat[i][(j+1) % (columns)])+2*h*isingmat[i][j]
+    deltaE=2*J*isingmat[i][j]*(isingmat[i-1][j]+isingmat[(i+1) % (rows)][j]+isingmat[i][j-1]+isingmat[i][(j+1) % (columns)])+2*h*isingmat[i][j]
 
-	if deltaE<=0:
-		isingmat[i][j] *= -1
-		spin_change += 1
-	elif random.random() < np.exp(-deltaE/T):
-		isingmat[i][j] *= -1
-		spin_change += 1
-	equilib.append(spin_change)
-	k+=1
-
-	if k%10000 == 0:
-		plt.imshow(isingmat,cmap='Greys')
-		plt.draw()
-		plt.pause(0.0001)
+    if deltaE<=0:
+        isingmat[i][j] *= -1
+        spin_change += 1
+    elif random.random() < np.exp(deltaE*neg_beta):
+        isingmat[i][j] *= -1
+        spin_change += 1
+    equilib.append(spin_change)
+    k+=1
+    #if k%10000 == 0:
+        #img.append([plt.imshow(isingmat,cmap='Greys')])
 
 equilib = equilib[::iterations/10000]
 
@@ -66,4 +64,5 @@ plt.figure()
 
 plt.plot(equilib)
 print "%s seconds" % (time.time() - start_time)
+print np.mean(isingmat)
 plt.show()

@@ -19,36 +19,36 @@ from matplotlib import animation
 
 
 def metrop(matrix, iterations, neg_beta):
-	k=0
-	while k < iterations:
+    k=0
+    while k < iterations:
 	
-		i = np.random.randint(0,rows)
-		j = np.random.randint(0,columns)
-	
-		deltaE=2*J*matrix[i][j]*(matrix[i-1][j]+matrix[(i+1) % (rows)][j]+matrix[i][j-1]+matrix[i][(j+1) % (columns)])+2*h*matrix[i][j]
+        i = np.random.randint(0,rows)
+        j = np.random.randint(0,columns)
+        
+        deltaE=2*J*matrix[i][j]*(matrix[i-1][j]+matrix[(i+1) % (rows)][j]+matrix[i][j-1]+matrix[i][(j+1) % (columns)])+2*h*matrix[i][j]
 
-		if deltaE<=0:
-			matrix[i][j] *= -1
-			#spin_change += 1
-		elif random.random() < np.exp(deltaE*neg_beta):
-			matrix[i][j] *= -1
-			#spin_change += 1
-		#equilib.append(spin_change)
-		k+=1
-		#if k%10000 == 0:
-			#img.append([plt.imshow(matrix,cmap='Greys')])
-	return matrix
+        if deltaE<=0:
+            matrix[i][j] *= -1
+            #spin_change += 1
+        elif random.random() < np.exp(deltaE*neg_beta):
+            matrix[i][j] *= -1
+            #spin_change += 1
+            #equilib.append(spin_change)
+        k+=1
+        #if k%10000 == 0:
+            #img.append([plt.imshow(matrix,cmap='Greys')])
+    return matrix
 
 
 def mag(matrix):
-	return np.sum(matrix)
+    return np.sum(matrix)
 
 def tot_energy(matrix):
-	tot_e = 0
-	for i in range(rows):
-		for j in range(columns):
-			tot_e += -1*(J*matrix[i][j]*(matrix[i-1][j]+matrix[i][j-1])+h*matrix[i][j])#each pair of sites should be counted only once
-	return tot_e
+    tot_e = 0
+    for i in range(rows):
+        for j in range(columns):
+            tot_e += -1*(J*matrix[i][j]*(matrix[i-1][j]+matrix[i][j-1])+h*matrix[i][j])#each pair of sites should be counted only once
+    return tot_e
 
 
 
@@ -77,19 +77,19 @@ initial_matrix = np.random.choice([-1,1],size=(rows,columns))
 
 
 for i in range(num_temps):
-	neg_beta = -1./T_array[i]
-	E = np.zeros(averageing_steps)
-	M = np.zeros(averageing_steps)
-	f_matrix = metrop(initial_matrix, steps, neg_beta)
+    neg_beta = -1./T_array[i]
+    E = np.zeros(averageing_steps)
+    M = np.zeros(averageing_steps)
+    f_matrix = metrop(initial_matrix, steps, neg_beta)
 	
-	for j in range(averageing_steps):
-		f_matrix = metrop(f_matrix, rows*columns, neg_beta)
-		E[j] = tot_energy(f_matrix)
-		M[j] = mag(f_matrix)
-	energy[i] = np.sum(E)
-	magnetization[i] = abs(np.sum(M))
-	specheat[i] = np.sum(E*E) - np.sum(E)*np.sum(E)/averageing_steps
-	magsuscep[i] = np.sum(M*M) - np.sum(M)*np.sum(M)/averageing_steps
+    for j in range(averageing_steps):
+        f_matrix = metrop(f_matrix, rows*columns, neg_beta)
+        E[j] = tot_energy(f_matrix)
+        M[j] = mag(f_matrix)
+    energy[i] = np.sum(E)
+    magnetization[i] = abs(np.sum(M))
+    specheat[i] = np.sum(E*E) - np.sum(E)*np.sum(E)/averageing_steps
+    magsuscep[i] = np.sum(M*M) - np.sum(M)*np.sum(M)/averageing_steps
 
 c = rows*columns*averageing_steps
 

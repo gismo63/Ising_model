@@ -1,71 +1,4 @@
 #!/usr/bin/env python
-"""
-import matplotlib.pyplot as plt
-import numpy as np
-import random
-import time
-
-start_time = time.time()
-
-J=1.
-N=12
-T=1.
-h=0
-
-iterations=2**18
-
-isingmat = np.random.choice([-1,1],size=(N,N,N))
-
-
-
-k=0
-
-deltaE=0
-spin_change=0
-equilib = []
-neg_beta = -1./T
-m=0
-
-
-while m < iterations:
-	
-	i = np.random.randint(0,N)
-	j = np.random.randint(0,N)
-	k = np.random.randint(0,N)
-	
-	deltaE=2*(J*isingmat[i][j][k]*(isingmat[i-1][j][k]+isingmat[(i+1) % (N)][j][k]+isingmat[i][j-1][k]+isingmat[i][(j+1) % (N)][k] + isingmat[i][j][k-1] + isingmat[i][j][(k+1) % N])+h*isingmat[i][j][k])
-
-	if deltaE<=0:
-		isingmat[i][j][k] *= -1
-		spin_change += 1
-	elif random.random() < np.exp(deltaE*neg_beta):
-		isingmat[i][j][k] *= -1
-		spin_change += 1
-	equilib.append(spin_change)
-	m+=1
-	#if k%10000 == 0:
-		#img.append([plt.imshow(isingmat,cmap='Greys')])
-
-equilib = equilib[::iterations/10000]
-
-
-
-
-#plt.plot(np.exp(np.array(equilib)*1e-5))
-
-
-print isingmat
-
-
-
-plt.plot(equilib)
-print "%s seconds" % (time.time() - start_time)
-print np.mean(isingmat)
-plt.show()
-
-"""
-
-#!/usr/bin/env python
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -86,39 +19,39 @@ from matplotlib import animation
 
 
 def metrop(matrix, iterations, neg_beta):
-	m=0
-	while m < iterations:
+    m=0
+    while m < iterations:
 	
-		i = np.random.randint(0,N)
-		j = np.random.randint(0,N)
-		k = np.random.randint(0,N)
+        i = np.random.randint(0,N)
+        j = np.random.randint(0,N)
+        k = np.random.randint(0,N)
 	
-		deltaE=2*(J*matrix[i][j][k]*(matrix[i-1][j][k]+matrix[(i+1) % (N)][j][k]+matrix[i][j-1][k]+matrix[i][(j+1) % (N)][k] + matrix[i][j][k-1] + matrix[i][j][(k+1) % N])+h*matrix[i][j][k])
+        deltaE=2*(J*matrix[i][j][k]*(matrix[i-1][j][k]+matrix[(i+1) % (N)][j][k]+matrix[i][j-1][k]+matrix[i][(j+1) % (N)][k] + matrix[i][j][k-1] + matrix[i][j][(k+1) % N])+h*matrix[i][j][k])
 
-		if deltaE<=0:
-			matrix[i][j][k] *= -1
-			#spin_change += 1
-		elif random.random() < np.exp(deltaE*neg_beta):
-			matrix[i][j][k] *= -1
-			#spin_change += 1
-		#equilib.append(spin_change)
-		m+=1
-		#if k%10000 == 0:
-			#img.append([plt.imshow(matrix,cmap='Greys')])
-	return matrix
+        if deltaE<=0:
+            matrix[i][j][k] *= -1
+            #spin_change += 1
+        elif random.random() < np.exp(deltaE*neg_beta):
+            matrix[i][j][k] *= -1
+            #spin_change += 1
+        #equilib.append(spin_change)
+        m+=1
+        #if k%10000 == 0:
+            #img.append([plt.imshow(matrix,cmap='Greys')])
+    return matrix
 
 
 def mag(matrix):
-	return np.sum(matrix)
+    return np.sum(matrix)
 
 def tot_energy(matrix):
-	tot_e = 0
-	arr = range(N)
-	for i in arr:
-		for j in arr:
-			for k in arr:
-				tot_e += -1*(J*matrix[i][j][k]*(matrix[i-1][j][k]+matrix[i][j-1][k] + matrix[i][j][k-1])+h*matrix[i][j][k])#each pair of sites should be counted only once
-	return tot_e
+    tot_e = 0
+    arr = range(N)
+    for i in arr:
+        for j in arr:
+            for k in arr:
+                tot_e += -1*(J*matrix[i][j][k]*(matrix[i-1][j][k]+matrix[i][j-1][k] + matrix[i][j][k-1])+h*matrix[i][j][k])#each pair of sites should be counted only once
+    return tot_e
 
 
 
@@ -146,19 +79,19 @@ initial_matrix = np.random.choice([-1,1],size=(N,N,N))
 
 
 for i in range(num_temps):
-	neg_beta = -1./T_array[i]
-	E = np.zeros(averageing_steps)
-	M = np.zeros(averageing_steps)
-	f_matrix = metrop(initial_matrix, steps, neg_beta)
+    neg_beta = -1./T_array[i]
+    E = np.zeros(averageing_steps)
+    M = np.zeros(averageing_steps)
+    f_matrix = metrop(initial_matrix, steps, neg_beta)
 	
-	for j in range(averageing_steps):
-		f_matrix = metrop(f_matrix, N**3, neg_beta)
-		E[j] = tot_energy(f_matrix)
-		M[j] = mag(f_matrix)
-	energy[i] = np.sum(E)
-	magnetization[i] = abs(np.sum(M))
-	specheat[i] = np.sum(E*E) - np.sum(E)*np.sum(E)/averageing_steps
-	magsuscep[i] = np.sum(M*M) - np.sum(M)*np.sum(M)/averageing_steps
+    for j in range(averageing_steps):
+        f_matrix = metrop(f_matrix, N**3, neg_beta)
+        E[j] = tot_energy(f_matrix)
+        M[j] = mag(f_matrix)
+    energy[i] = np.sum(E)
+    magnetization[i] = abs(np.sum(M))
+    specheat[i] = np.sum(E*E) - np.sum(E)*np.sum(E)/averageing_steps
+    magsuscep[i] = np.sum(M*M) - np.sum(M)*np.sum(M)/averageing_steps
 
 c = N**3*averageing_steps
 

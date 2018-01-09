@@ -36,22 +36,22 @@ img = []
 
 while k < iterations:
 	
-	i = random.choice(np.arange(rows))
-	j = random.choice(np.arange(columns))
+    i = random.choice(np.arange(rows))
+    j = random.choice(np.arange(columns))
 	
-	deltaE=2*J*isingmat[i][j]*(isingmat[i-1][j]+isingmat[(i+1) % (rows)][j]+isingmat[i][j-1]+isingmat[i][(j+1) % (columns)])+2*h*isingmat[i][j]
+    deltaE=2*J*isingmat[i][j]*(isingmat[i-1][j]+isingmat[(i+1) % (rows)][j]+isingmat[i][j-1]+isingmat[i][(j+1) % (columns)])+2*h*isingmat[i][j]
 
-	if deltaE<=0:
-		isingmat[i][j] *= -1
-		spin_change += 1
-	elif random.random() < np.exp(-deltaE/T):
-		isingmat[i][j] *= -1
-		spin_change += 1
-	equilib.append(spin_change)
-	k+=1
+    if deltaE<=0:
+        isingmat[i][j] *= -1
+        spin_change += 1
+    elif random.random() < np.exp(-deltaE/T):
+        isingmat[i][j] *= -1
+        spin_change += 1
+    equilib.append(spin_change)
+    k+=1
 
-	if k%10000 == 0:
-		img.append([plt.imshow(isingmat,cmap='Greys')])
+    if k%10000 == 0:
+        img.append([plt.imshow(isingmat,cmap='Greys')])
 
 
 equilib = equilib[::iterations/10000]
@@ -74,3 +74,4 @@ plt.plot(equilib)
 
 print "%s seconds" % (time.time() - start_time)
 plt.show()
+

@@ -19,62 +19,62 @@ from matplotlib import animation
 
 
 def metrop(matrix1, matrix2, iterations, neg_beta):
-	m=0
+    m=0
 	
-        while m < iterations:
-                if random.getrandbits(1):
-                        i = np.random.randint(0,N)
-                        j = np.random.randint(0,N)
-                        k = np.random.randint(0,N/2)
+    while m < iterations:
+        if random.getrandbits(1):
+            i = np.random.randint(0,N)
+            j = np.random.randint(0,N)
+            k = np.random.randint(0,N/2)
                         
-                        deltaE=2*(J*matrix2[i][j][k]*(matrix1[i][j][k]+matrix1[i][j][(k+1)%N/2]+matrix1[i][(j+1)%N][k]+matrix1[i][(j+1)%N][(k+1)%N/2] + matrix1[(i+1)%N][j][(k+1)%N/2] + matrix1[(i+1)%N][j][k] + matrix1[(i+1)%N][(j+1)%N][k] + matrix1[(i+1)%N][(j+1)%N][(k+1) % N/2])+h*matrix2[i][j][k])
+            deltaE=2*(J*matrix2[i][j][k]*(matrix1[i][j][k]+matrix1[i][j][(k+1)%N/2]+matrix1[i][(j+1)%N][k]+matrix1[i][(j+1)%N][(k+1)%N/2] + matrix1[(i+1)%N][j][(k+1)%N/2] + matrix1[(i+1)%N][j][k] + matrix1[(i+1)%N][(j+1)%N][k] + matrix1[(i+1)%N][(j+1)%N][(k+1) % N/2])+h*matrix2[i][j][k])
 
-                        if deltaE<=0:
-                                matrix2[i][j][k] *= -1
-                                #spin_change += 1
-                        elif random.random() < np.exp(deltaE*neg_beta):
-                                matrix2[i][j][k] *= -1
-                                #spin_change += 1
-                        #equilib.append(spin_change)
-                        m+=1
-                        #if k%10000 == 0:
-                                #img.append([plt.imshow(matrix,cmap='Greys')])
-                else:
-                        i = np.random.randint(0,N)
-                        j = np.random.randint(0,N)
-                        k = np.random.randint(0,N/2)
+            if deltaE<=0:
+                matrix2[i][j][k] *= -1
+                #spin_change += 1
+            elif random.random() < np.exp(deltaE*neg_beta):
+                matrix2[i][j][k] *= -1
+                #spin_change += 1
+                #equilib.append(spin_change)
+            m+=1
+            #if k%10000 == 0:
+                #img.append([plt.imshow(matrix,cmap='Greys')])
+        else:
+            i = np.random.randint(0,N)
+            j = np.random.randint(0,N)
+            k = np.random.randint(0,N/2)
                                
-                        deltaE=2*(J*matrix1[i][j][k]*(matrix2[i][j][k]+matrix2[i][j][k-1]+matrix2[i][j-1][k-1]+matrix2[i][j-1][k] + matrix2[i-1][j][k-1] + matrix2[i-1][j][k] + matrix2[i-1][j-1][k] + matrix2[i-1][j-1][k-1])+h*matrix1[i][j][k])
+            deltaE=2*(J*matrix1[i][j][k]*(matrix2[i][j][k]+matrix2[i][j][k-1]+matrix2[i][j-1][k-1]+matrix2[i][j-1][k] + matrix2[i-1][j][k-1] + matrix2[i-1][j][k] + matrix2[i-1][j-1][k] + matrix2[i-1][j-1][k-1])+h*matrix1[i][j][k])
 
-                        if deltaE<=0:
-                                matrix1[i][j][k] *= -1
-                                #spin_change += 1
-                        elif random.random() < np.exp(deltaE*neg_beta):
-                                matrix1[i][j][k] *= -1
-                                #spin_change += 1
-                        #equilib.append(spin_change)
-                        m+=1
-                        #if k%10000 == 0:
-                                #img.append([plt.imshow(matrix,cmap='Greys')])
+            if deltaE<=0:
+                matrix1[i][j][k] *= -1
+                #spin_change += 1
+            elif random.random() < np.exp(deltaE*neg_beta):
+                matrix1[i][j][k] *= -1
+                #spin_change += 1
+            #equilib.append(spin_change)
+            m+=1
+            #if k%10000 == 0:
+                #img.append([plt.imshow(matrix,cmap='Greys')])
 	
-	return matrix1, matrix2
+    return matrix1, matrix2
 
 
 def mag(matrix1, matrix2):
-	return (np.sum(matrix1)+ np.sum(matrix2))
+    return (np.sum(matrix1)+ np.sum(matrix2))
 
 def tot_energy(matrix1, matrix2):
-	tot_e = 0
-	arr = range(N)
-	for i in arr:
-		for j in arr:
-			for k in range(N/2):
-				tot_e += -1*(J*matrix2[i][j][k]*(matrix1[i][j][k]+matrix1[i][j][(k+1)%N/2]+matrix1[i][(j+1)%N][k]+matrix1[i][(j+1)%N][(k+1)%N/2] + matrix1[(i+1)%N][j][(k+1)%N/2] + matrix1[(i+1)%N][j][k] + matrix1[(i+1)%N][(j+1)%N][k] + matrix1[(i+1)%N][(j+1)%N][(k+1) % N/2])+2*h*matrix1[i][j][k])
-	for i in arr:
-		for j in arr:
-			for k in range(N/2):
-				tot_e += -1*(J*matrix1[i][j][k]*(matrix2[i][j][k]+matrix2[i][j][k-1]+matrix2[i][j-1][k-1]+matrix2[i][j-1][k] + matrix2[i-1][j][k-1] + matrix2[i-1][j][k] + matrix2[i-1][j-1][k] + matrix2[i-1][j-1][k-1])+2*h*matrix1[i][j][k])
-	return tot_e/2
+    tot_e = 0
+    arr = range(N)
+    for i in arr:
+        for j in arr:
+            for k in range(N/2):
+                tot_e += -1*(J*matrix2[i][j][k]*(matrix1[i][j][k]+matrix1[i][j][(k+1)%N/2]+matrix1[i][(j+1)%N][k]+matrix1[i][(j+1)%N][(k+1)%N/2] + matrix1[(i+1)%N][j][(k+1)%N/2] + matrix1[(i+1)%N][j][k] + matrix1[(i+1)%N][(j+1)%N][k] + matrix1[(i+1)%N][(j+1)%N][(k+1) % N/2])+2*h*matrix1[i][j][k])
+    for i in arr:
+        for j in arr:
+            for k in range(N/2):
+                tot_e += -1*(J*matrix1[i][j][k]*(matrix2[i][j][k]+matrix2[i][j][k-1]+matrix2[i][j-1][k-1]+matrix2[i][j-1][k] + matrix2[i-1][j][k-1] + matrix2[i-1][j][k] + matrix2[i-1][j-1][k] + matrix2[i-1][j-1][k-1])+2*h*matrix1[i][j][k])
+    return tot_e/2
 
 
 
@@ -103,19 +103,19 @@ initial_matrix2 = np.random.choice([-1,1],size=(N,N,N/2))
 
 
 for i in range(num_temps):
-	neg_beta = -1./T_array[i]
-	E = np.zeros(averageing_steps)
-	M = np.zeros(averageing_steps)
-	f_matrix1, f_matrix2 = metrop(initial_matrix1, initial_matrix1, steps, neg_beta)
+    neg_beta = -1./T_array[i]
+    E = np.zeros(averageing_steps)
+    M = np.zeros(averageing_steps)
+    f_matrix1, f_matrix2 = metrop(initial_matrix1, initial_matrix2, steps, neg_beta)
 	
-	for j in range(averageing_steps):
-		f_matrix1, f_matrix2 = metrop(f_matrix1, f_matrix2, N**3, neg_beta)
-		E[j] = tot_energy(f_matrix1,f_matrix2)
-		M[j] = mag(f_matrix1,f_matrix2)
-	energy[i] = np.sum(E)
-	magnetization[i] = abs(np.sum(M))
-	specheat[i] = np.sum(E*E) - np.sum(E)*np.sum(E)/averageing_steps
-	magsuscep[i] = np.sum(M*M) - np.sum(M)*np.sum(M)/averageing_steps
+    for j in range(averageing_steps):
+        f_matrix1, f_matrix2 = metrop(f_matrix1, f_matrix2, N**3, neg_beta)
+        E[j] = tot_energy(f_matrix1,f_matrix2)
+        M[j] = mag(f_matrix1,f_matrix2)
+    energy[i] = np.sum(E)
+    magnetization[i] = abs(np.sum(M))
+    specheat[i] = np.sum(E*E) - np.sum(E)*np.sum(E)/averageing_steps
+    magsuscep[i] = np.sum(M*M) - np.sum(M)*np.sum(M)/averageing_steps
 
 c = N**3*averageing_steps
 

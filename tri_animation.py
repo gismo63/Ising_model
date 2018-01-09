@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import random
@@ -13,15 +12,18 @@ from matplotlib import animation
 start_time = time.time()
 
 J=1.
-N=20
+N=30
 N2=2*N
 T=1.
 h=0
 neg_beta = -1./T
 
-iterations=2**4
+frames = 2**8
+
+iterations=2**16
 
 matrix = np.random.choice([-1,1],size=(N,N))
+i_mat = matrix
 
 fig = plt.figure(figsize=(20,20))
 
@@ -32,44 +34,44 @@ i=0
 j=0
 spin_change=0
 equilib = []
-img = []
+img = np.ndarray((frames,N,N), dtype = 'float')
 
 
 
 patches = []
 
-for i in range(N2):
-    for j in range(N):
-        patches.append(plt.Circle((j,i), radius=.3, lw=2, ec="black", facecolor=None))
+for i in range(N):
+    for j in range(N2):
+        patches.append(plt.Circle((j,i), radius=.5, facecolor=None))
         
 def init():
     #Draw background
-    im = plt.imshow(np.zeros((N2,N)),interpolation="none", hold=True)
+    plt.imshow(np.zeros((N,N2)), animated=True)
     axes = plt.gca()
     axes.autoscale(False)
 
     #Add patches to axes
     for p in patches:
         axes.add_patch(p)
-    return [im]
+    return patches
         
 def colour_matrix(isingmat):
 	return (isingmat + 1)/2
 	
 	
 def animate(n):
-	i=0
-	j=0
-	for i in range(N2):
-		for j in range(N):
-			if (i+j)%2:
-				patches[i*N + j].set_visible(False)
-			else:
-				patches[i*N + j].set_facecolor(str(colours[n][i/2][j]))
-				patches[i*N + j].set_visible(True)
-	return patches
+    i=0
+    j=0
+    for i in range(N):
+        for j in range(N2):
+            if (i+j)%2:
+                patches[i*N2 + j].set_visible(False)
+            else:
+                patches[i*N2 + j].set_facecolor(str(colours[n][i][j/2]))
+                patches[i*N2 + j].set_visible(True)
+    return patches
 
-
+count = 0
 while k < iterations:
     i = np.random.randint(0,N)
     j = np.random.randint(0,N)
@@ -83,10 +85,13 @@ while k < iterations:
     elif random.random() < np.exp(deltaE*neg_beta):
         matrix[i][j] *= -1
         spin_change += 1
- 	equilib.append(spin_change)
-  	k+=1
-   	if k%1 == 0:
-		img.append(matrix)
+    equilib.append(spin_change)
+    k+=1
+    if k%(iterations/frames) == 0:
+        img[count] = matrix
+        count +=1
+        
+print frames - count
 
 
 #equilib = equilib[::iterations/10000]
@@ -94,17 +99,17 @@ while k < iterations:
 colours = []
 
 for i in range(len(img)):
-	colours.append(colour_matrix(img[i]))
+    colours.append(colour_matrix(img[i]))
 
 
 
-anim = animation.FuncAnimation(fig, animate, init_func=init, frames=len(img), blit=True)
+anim = animation.FuncAnimation(fig, animate, init_func=init, frames=len(img), interval = 1, blit=True)
 
-anim.save('test.mp4', writer="ffmpeg", fps=2)
+#anim.save('test.mp4', writer="ffmpeg", fps=2)
 
 
 
-print matrix
+#print img
 
 #plt.plot(equilib)
 

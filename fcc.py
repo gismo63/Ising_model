@@ -86,7 +86,7 @@ def metrop(matrix1, matrix2, matrix3, iterations, neg_beta):
 
 
 def mag(matrix1, matrix2, matrix3):
-	return (np.sum(matrix1)+ np.sum(matrix2) + np.sum(matrix3))
+    return (np.sum(matrix1)+ np.sum(matrix2) + np.sum(matrix3))
 def tot_energy(matrix1, matrix2, matrix3):
     tot_e = 0
     arr = range(N)
@@ -141,19 +141,19 @@ initial_matrix2 = np.random.choice([-1,1],size=(N,N,N/3))
 initial_matrix3 = np.random.choice([-1,1],size=(N,N,N/3))                        
 
 for i in range(num_temps):
-	neg_beta = -1./T_array[i]
-	E = np.zeros(averageing_steps)
-	M = np.zeros(averageing_steps)
-	f_matrix1, f_matrix2, f_matrix3 = metrop(initial_matrix1, initial_matrix2, initial_matrix3, steps, neg_beta)
+    neg_beta = -1./T_array[i]
+    E = np.zeros(averageing_steps)
+    M = np.zeros(averageing_steps)
+    f_matrix1, f_matrix2, f_matrix3 = metrop(initial_matrix1, initial_matrix2, initial_matrix3, steps, neg_beta)
 	
-	for j in range(averageing_steps):
-		f_matrix1, f_matrix2, f_matrix3 = metrop(f_matrix1, f_matrix2, f_matrix3, N**4, neg_beta)
-		E[j] = tot_energy(f_matrix1,f_matrix2, f_matrix3)
-		M[j] = mag(f_matrix1,f_matrix2, f_matrix3)
-	energy[i] = np.sum(E)
-	magnetization[i] = abs(np.sum(M))
-	specheat[i] = np.sum(E*E) - np.sum(E)*np.sum(E)/averageing_steps
-	magsuscep[i] = np.sum(M*M) - np.sum(M)*np.sum(M)/averageing_steps
+    for j in range(averageing_steps):
+        f_matrix1, f_matrix2, f_matrix3 = metrop(f_matrix1, f_matrix2, f_matrix3, N**4, neg_beta)
+        E[j] = tot_energy(f_matrix1,f_matrix2, f_matrix3)
+        M[j] = mag(f_matrix1,f_matrix2, f_matrix3)
+    energy[i] = np.sum(E)
+    magnetization[i] = abs(np.sum(M))
+    specheat[i] = np.sum(E*E) - np.sum(E)*np.sum(E)/averageing_steps
+    magsuscep[i] = np.sum(M*M) - np.sum(M)*np.sum(M)/averageing_steps
 
 c = N**3*averageing_steps
 
