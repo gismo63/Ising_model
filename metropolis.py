@@ -47,7 +47,9 @@ while k < iterations:
     #if k%10000 == 0:
         #img.append([plt.imshow(isingmat,cmap='Greys')])
 
-equilib = equilib[::iterations/10000]
+
+if iterations>=10000:
+    equilib = equilib[::iterations/10000]
 
 
 

@@ -1,5 +1,12 @@
 #!/usr/bin/env python
 
+"""
+First attempt at the code, doesn't use the metropolis algorithm
+The program checks the change in energy for each spin flip and calculates the probability as a matrix
+This ends up being a lot slower than the metropolis algorithm
+This code also uses fixed boundary conditions
+"""
+
 import matplotlib.pyplot as plt
 import numpy as np
 import random
@@ -10,7 +17,7 @@ rows=100
 k_b=1
 T=1
 
-iterations=50
+iterations=500
 
 
 isingmat = np.zeros((rows,columns))
@@ -26,7 +33,7 @@ deltaE = np.zeros((rows-2,columns-2))
 for i in range(iterations):
     for i in range(rows-2):
         for j in range(columns-2):
-            deltaE[i][j]=2*J*isingmat[i+1][j+1]*(isingmat[i][j+1]+isingmat[i+2][j+1]+isingmat[i+1][j]+isingmat[i+1][j+2])
+            deltaE[i][j]=-2*J*isingmat[i+1][j+1]*(isingmat[i][j+1]+isingmat[i+2][j+1]+isingmat[i+1][j]+isingmat[i+1][j+2])
 
     p_flip = np.exp((-deltaE)/(k_b*T))
 
