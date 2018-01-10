@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+"""
+One dimensional version of analysis.py
+"""
+
 import matplotlib.pyplot as plt
 import numpy as np
 import random
@@ -10,13 +14,14 @@ from matplotlib import animation
 
 
 
-#spin_change=0
-#equilib = []
+spin_change=0
+equilib = []
 
 
 
 
 def metrop(matrix, iterations, neg_beta):
+    global spin_change
     k=0
     while k < iterations:
 	
@@ -26,11 +31,11 @@ def metrop(matrix, iterations, neg_beta):
 
         if deltaE<=0:
             matrix[i] *= -1
-            #spin_change += 1
+            spin_change += 1
         elif random.random() < np.exp(deltaE*neg_beta):
             matrix[i] *= -1
-            #spin_change += 1
-            #equilib.append(spin_change)
+            spin_change += 1
+        equilib.append(spin_change)
         k+=1
     return matrix
 
@@ -105,24 +110,14 @@ plt.figure()
 
 plt.plot(T_array, magsuscep, 'o')
 
-#equilib = equilib[::iterations/10000]
 
-
-
-#fig=plt.figure()
-
-#ani = animation.ArtistAnimation(fig, img, interval = 0, blit = True, repeat_delay = 1000)
-
-
-#plt.figure()
-
-
-#plt.imshow(f_matrix,cmap='Greys')
+if steps>=10000:
+    equilib = equilib[::steps/10000]
 
 
 
 
-#plt.plot(equilib)
+plt.plot(equilib)
 
 print f_matrix
 

@@ -1,27 +1,32 @@
 #!/usr/bin/env python
 
+"""
+This program calculates the magnetization, energy, heat capacity and magnetic susceptibility
+per site of the 3d fcc lattice at various temperatures around the critical temperature
+and plots graphs of them
+"""
+
 import matplotlib.pyplot as plt
 import numpy as np
 import random
 import time
-from matplotlib import animation
+
+"""
+There isn't a particularly nice way to arrange the fcc lattice as there was with the bcc lattice,
+it is easier to consider the cpp structure which is just the fcc rotated. This consists of layers
+of 3 triangular lattices stacked on top of each other
+The three matrices in the program represent the three different triangular lattices
+Since matricies can't properly represent the triangular matricies the nearest neighbours are 
+slightly different for each layer. In order to figure these out I drew the layers out on paper
+each spin has 12 nearest neighbours
+"""
 
 
-
-#im = plt.imshow(initial_matrix,cmap='Greys', animated=True)
-
-
-#spin_change=0
-#equilib = []
-#img = []
-
-
-
-
+#See analysis.py for explanation of most of the code
 def metrop(matrix1, matrix2, matrix3, iterations, neg_beta):
     m=0
     while m < iterations:
-        v = np.random.choice([0,1,2])
+        v = np.random.choice([0,1,2])#choose randomly between the two layers
         if v==0:
             i = np.random.randint(0,N)
             j = np.random.randint(0,N)
@@ -34,14 +39,9 @@ def metrop(matrix1, matrix2, matrix3, iterations, neg_beta):
             
             if deltaE<=0:
                 matrix1[i][j][k] *= -1
-                #spin_change += 1
             elif random.random() < np.exp(deltaE*neg_beta):
                 matrix1[i][j][k] *= -1
-                #spin_change += 1
-            #equilib.append(spin_change)
             m+=1
-            #if k%10000 == 0:
-                #img.append([plt.imshow(matrix,cmap='Greys')])
         elif v==1:
             i = np.random.randint(0,N)
             j = np.random.randint(0,N)
@@ -53,14 +53,9 @@ def metrop(matrix1, matrix2, matrix3, iterations, neg_beta):
                 deltaE=2*(J*matrix2[i][j][k]*(matrix2[i-1][j][k]+matrix2[(i+1)%N][j][k]+matrix2[i-1][j-1][k]+matrix2[i][j-1][k]+matrix2[i][(j+1)%N][k]+matrix2[i-1][(j+1)%N][k] + matrix3[i][j][k]+matrix3[i-1][j][k]+matrix3[i][(j+1)%N][k] + matrix1[i][(j+1)%N][k]+matrix1[i-1][(j+1)%N][k]+matrix1[i][j][k])+h*matrix1[i][j][k])
             if deltaE<=0:
                 matrix2[i][j][k] *= -1
-                #spin_change += 1
             elif random.random() < np.exp(deltaE*neg_beta):
                 matrix2[i][j][k] *= -1
-                #spin_change += 1
-            #equilib.append(spin_change)
             m+=1
-            #if k%10000 == 0:
-                #img.append([plt.imshow(matrix,cmap='Greys')])
         else:
             i = np.random.randint(0,N)
             j = np.random.randint(0,N)
@@ -72,14 +67,9 @@ def metrop(matrix1, matrix2, matrix3, iterations, neg_beta):
                 deltaE=2*(J*matrix3[i][j][k]*(matrix3[i-1][j][k]+matrix3[(i+1)%N][j][k]+matrix3[i-1][j-1][k]+matrix3[i][j-1][k]+matrix3[i][(j+1)%N][k]+matrix3[i-1][(j+1)%N][k] + matrix1[(i+1)%N][j][(k+1)%(N/3)]+matrix1[i][j][(k+1)%(N/3)]+matrix1[i][(j+1)%N][(k+1)%(N/3)] + matrix2[(i+1)%N][j][k]+matrix2[i][j][k]+matrix2[i][j-1][k])+h*matrix1[i][j][k])
             if deltaE<=0:
                 matrix3[i][j][k] *= -1
-                #spin_change += 1
             elif random.random() < np.exp(deltaE*neg_beta):
                 matrix3[i][j][k] *= -1
-                #spin_change += 1
-            #equilib.append(spin_change)
             m+=1
-            #if k%10000 == 0:
-                #img.append([plt.imshow(matrix,cmap='Greys')])
 
 	
     return matrix1, matrix2, matrix3
@@ -87,6 +77,7 @@ def metrop(matrix1, matrix2, matrix3, iterations, neg_beta):
 
 def mag(matrix1, matrix2, matrix3):
     return (np.sum(matrix1)+ np.sum(matrix2) + np.sum(matrix3))
+
 def tot_energy(matrix1, matrix2, matrix3):
     tot_e = 0
     arr = range(N)
@@ -176,24 +167,6 @@ plt.figure()
 
 plt.plot(T_array, magsuscep, 'o')
 
-#equilib = equilib[::iterations/10000]
-
-
-
-#fig=plt.figure()
-
-#ani = animation.ArtistAnimation(fig, img, interval = 0, blit = True, repeat_delay = 1000)
-
-
-#plt.figure()
-
-
-#plt.imshow(f_matrix,cmap='Greys')
-
-
-
-
-#plt.plot(equilib)
 
 print f_matrix1
 

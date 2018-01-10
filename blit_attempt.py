@@ -12,8 +12,8 @@ from matplotlib import animation
 start_time = time.time()
 
 J=1.
-columns=200
-rows=200
+columns=20
+rows=20
 T=1.
 h=0
 
@@ -21,7 +21,6 @@ iterations=1000000
 
 isingmat = np.random.choice([-1,1],size=(rows,columns))
 
-im = plt.imshow(isingmat,cmap='Greys', animated=True)
 
 k=0
 
@@ -30,7 +29,8 @@ i=0
 j=0
 spin_change=0
 equilib = []
-img = []
+frames = 1000
+img = []#will be a list of matrix plots
 
 
 
@@ -50,18 +50,18 @@ while k < iterations:
     equilib.append(spin_change)
     k+=1
 
-    if k%10000 == 0:
+    if k%(iterations/frames) == 0:#takes a snapshot of the state of the matrix at equally spaced intervals such that the final animation will have $frames frames
         img.append([plt.imshow(isingmat,cmap='Greys')])
 
-
-equilib = equilib[::iterations/10000]
+if iterations>=10000:
+    equilib = equilib[::iterations/10000]#since there are so many spin changes especially for larger latices only some of the values in thelist are chosen so as not to get a memory error
 
 
 
 
 fig=plt.figure()
 
-ani = animation.ArtistAnimation(fig, img, interval = 0, blit = True, repeat_delay = 1000)
+ani = animation.ArtistAnimation(fig, img, interval = 0, blit = True, repeat_delay = 1000)#creates an animation out of the img list
 
 
 

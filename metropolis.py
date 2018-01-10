@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+"""
+Here periodicbound.py was taken and the original algorithm was replaced with the metropolis algorithm
+"""
+
 import matplotlib.pyplot as plt
 import numpy as np
 import random
@@ -44,15 +48,11 @@ while k < iterations:
         spin_change += 1
     equilib.append(spin_change)
     k+=1
-    #if k%10000 == 0:
-        #img.append([plt.imshow(isingmat,cmap='Greys')])
-
-equilib = equilib[::iterations/10000]
 
 
+if iterations>=10000:
+    equilib = equilib[::iterations/10000]
 
-
-#plt.plot(np.exp(np.array(equilib)*1e-5))
 
 
 print isingmat
@@ -62,7 +62,7 @@ plt.imshow(isingmat,cmap='Greys')
 plt.figure()
 
 
-plt.plot(equilib)
+plt.plot(equilib)#this graph illustrates how long it took for the system to reach equilibrium
 print "%s seconds" % (time.time() - start_time)
 print np.mean(isingmat)
 plt.show()

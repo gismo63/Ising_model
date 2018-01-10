@@ -1,21 +1,13 @@
 #!/usr/bin/env python
 
+"""
+same as analysis.py but converted to 3d simple cubic lattice
+""" 
+
 import matplotlib.pyplot as plt
 import numpy as np
 import random
 import time
-from matplotlib import animation
-
-
-
-#im = plt.imshow(initial_matrix,cmap='Greys', animated=True)
-
-
-#spin_change=0
-#equilib = []
-#img = []
-
-
 
 
 def metrop(matrix, iterations, neg_beta):
@@ -30,14 +22,9 @@ def metrop(matrix, iterations, neg_beta):
 
         if deltaE<=0:
             matrix[i][j][k] *= -1
-            #spin_change += 1
         elif random.random() < np.exp(deltaE*neg_beta):
             matrix[i][j][k] *= -1
-            #spin_change += 1
-        #equilib.append(spin_change)
         m+=1
-        #if k%10000 == 0:
-            #img.append([plt.imshow(matrix,cmap='Greys')])
     return matrix
 
 
@@ -114,24 +101,6 @@ plt.figure()
 
 plt.plot(T_array, magsuscep, 'o')
 
-#equilib = equilib[::iterations/10000]
-
-
-
-#fig=plt.figure()
-
-#ani = animation.ArtistAnimation(fig, img, interval = 0, blit = True, repeat_delay = 1000)
-
-
-#plt.figure()
-
-
-#plt.imshow(f_matrix,cmap='Greys')
-
-
-
-
-#plt.plot(equilib)
 
 print f_matrix
 

@@ -1,0 +1,5 @@
+0000000000000000000000000000000000000000 a0dd2a6b169cb8c4045a82001b34fbc97f53631a Eoin <oconne19@tcd.ie> 1514910536 +0000	branch: Created from master
+a0dd2a6b169cb8c4045a82001b34fbc97f53631a 44ea8a41f63d58250235ca68a464f6eadbdfd653 Eoin <oconne19@tcd.ie> 1514919395 +0000	commit: Animation running fairly smooth
+44ea8a41f63d58250235ca68a464f6eadbdfd653 747039da0c3dd7de096a9b7fc35e91ad82dab08f Eoin <oconne19@tcd.ie> 1514919421 +0000	commit: example animation
+747039da0c3dd7de096a9b7fc35e91ad82dab08f cac9efac09f2e6633402a8e4469125b2d0e0ef2a Eoin <oconne19@tcd.ie> 1514922004 +0000	commit: remove test.mp4
+cac9efac09f2e6633402a8e4469125b2d0e0ef2a 17bba72b0bc7c1886af370a0f1781ad0433e40c8 Eoin <oconne19@tcd.ie> 1514922071 +0000	commit: Removed save option for animation because it doesn't save properly

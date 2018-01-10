@@ -1,42 +1,33 @@
 #!/usr/bin/env python
 
+"""
+Same as analysis.py except the square lattice is replaced by a triangular one
+"""
+
 import matplotlib.pyplot as plt
 import numpy as np
 import random
 import time
-from matplotlib import animation
 
-
-
-#im = plt.imshow(initial_matrix,cmap='Greys', animated=True)
-
-
-#spin_change=0
-#equilib = []
-#img = []
 
 
 
 
 def metrop(matrix, iterations, neg_beta):
+    global spin_change
     k=0
     while k < iterations:
         i = np.random.randint(0,N)
         j = np.random.randint(0,N)
-        if i%2:
+        if i%2:#Since the rowsn in a triangular lattice are not alligned the nearest neighbours differ based on whether it is an odd or even row
             deltaE=2*(J*matrix[i][j]*(matrix[i][j-1]+matrix[i][(j+1)%N]+matrix[i-1][(j+1)%N]+matrix[i-1][j]+matrix[(i+1)%N][(j+1)%N]+matrix[(i+1)%N][j])+h*matrix[i][j])
         else:
             deltaE=2*(J*matrix[i][j]*(matrix[i][j-1]+matrix[i][(j+1)%N]+matrix[i-1][j-1]+matrix[i-1][j]+matrix[(i+1)%N][j-1]+matrix[(i+1)%N][j])+h*matrix[i][j])
         if deltaE<=0:
             matrix[i][j] *= -1
-            #spin_change += 1
         elif random.random() < np.exp(deltaE*neg_beta):
             matrix[i][j] *= -1
-            #spin_change += 1
-        #equilib.append(spin_change)
         k+=1
-        #if k%10000 == 0:
-            #img.append([plt.imshow(matrix,cmap='Greys')])
     return matrix
 
 
@@ -114,24 +105,7 @@ plt.figure()
 
 plt.plot(T_array, magsuscep, 'o')
 
-#equilib = equilib[::iterations/10000]
 
-
-
-#fig=plt.figure()
-
-#ani = animation.ArtistAnimation(fig, img, interval = 0, blit = True, repeat_delay = 1000)
-
-
-#plt.figure()
-
-
-#plt.imshow(f_matrix,cmap='Greys')
-
-
-
-
-#plt.plot(equilib)
 
 print f_matrix
 

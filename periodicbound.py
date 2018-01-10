@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+"""
+isingmat.py was taken and periodic boundary conditions were added
+"""
+
 import matplotlib.pyplot as plt
 import numpy as np
 import random

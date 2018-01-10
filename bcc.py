@@ -1,28 +1,28 @@
 #!/usr/bin/env python
 
+"""
+This program calculates the magnetization, energy, heat capacity and magnetic susceptibility
+per site of the 3d bcc lattice at various temperatures around the critical temperature
+and plots graphs of them
+"""
+
 import matplotlib.pyplot as plt
 import numpy as np
 import random
 import time
-from matplotlib import animation
+
+"""
+The bcc latice can be represented by two simple cubic lattices such that the nearest
+neighbours of a point in the first lattice are all in the second lattice and vice versa
+"""
 
 
-
-#im = plt.imshow(initial_matrix,cmap='Greys', animated=True)
-
-
-#spin_change=0
-#equilib = []
-#img = []
-
-
-
-
+#See analysis.py for explanation of most of the code
 def metrop(matrix1, matrix2, iterations, neg_beta):
     m=0
 	
     while m < iterations:
-        if random.getrandbits(1):
+        if random.getrandbits(1):#choose randomly between the two matricies
             i = np.random.randint(0,N)
             j = np.random.randint(0,N)
             k = np.random.randint(0,N/2)
@@ -31,14 +31,9 @@ def metrop(matrix1, matrix2, iterations, neg_beta):
 
             if deltaE<=0:
                 matrix2[i][j][k] *= -1
-                #spin_change += 1
             elif random.random() < np.exp(deltaE*neg_beta):
                 matrix2[i][j][k] *= -1
-                #spin_change += 1
-                #equilib.append(spin_change)
             m+=1
-            #if k%10000 == 0:
-                #img.append([plt.imshow(matrix,cmap='Greys')])
         else:
             i = np.random.randint(0,N)
             j = np.random.randint(0,N)
@@ -48,14 +43,9 @@ def metrop(matrix1, matrix2, iterations, neg_beta):
 
             if deltaE<=0:
                 matrix1[i][j][k] *= -1
-                #spin_change += 1
             elif random.random() < np.exp(deltaE*neg_beta):
                 matrix1[i][j][k] *= -1
-                #spin_change += 1
-            #equilib.append(spin_change)
             m+=1
-            #if k%10000 == 0:
-                #img.append([plt.imshow(matrix,cmap='Greys')])
 	
     return matrix1, matrix2
 
@@ -138,24 +128,6 @@ plt.figure()
 
 plt.plot(T_array, magsuscep, 'o')
 
-#equilib = equilib[::iterations/10000]
-
-
-
-#fig=plt.figure()
-
-#ani = animation.ArtistAnimation(fig, img, interval = 0, blit = True, repeat_delay = 1000)
-
-
-#plt.figure()
-
-
-#plt.imshow(f_matrix,cmap='Greys')
-
-
-
-
-#plt.plot(equilib)
 
 print f_matrix1
 
