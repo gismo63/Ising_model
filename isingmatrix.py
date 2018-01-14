@@ -11,11 +11,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 import random
 
-J=1
+J=1.
 columns=100
 rows=100
 k_b=1
-T=1
+T=1.
+
 
 iterations=500
 
@@ -42,6 +43,10 @@ for i in range(iterations):
             if p_flip[i][j]>random.random():
                 isingmat[i+1][j+1]*=-1
 
-plt.imshow(isingmat, cmap='Greys')#matplotlib function for displaying a 2d array
+
+
+plt.imshow(isingmat, cmap='Greys', interpolation = 'none')#matplotlib function for displaying a 2d array
+
+
 plt.show()
 	

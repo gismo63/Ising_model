@@ -13,7 +13,8 @@ columns=100
 rows=100
 k_b=1.
 T=1.
-h=1.
+h=0.
+
 
 iterations=500
 
@@ -42,5 +43,10 @@ for k in range(iterations):
 print p_flip
 print isingmat
 
-plt.imshow(isingmat,cmap='Greys')
+
+
+
+
+plt.imshow(isingmat,cmap='Greys', interpolation = 'none')
+
 plt.show()
