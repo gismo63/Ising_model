@@ -26,7 +26,7 @@ each spin has 12 nearest neighbours
 def metrop(matrix1, matrix2, matrix3, iterations, neg_beta):
     m=0
     while m < iterations:
-        v = np.random.choice([0,1,2])#choose randomly between the two layers
+        v = np.random.choice([0,1,2])#choose randomly between the 3 layers
         if v==0:
             i = np.random.randint(0,N)
             j = np.random.randint(0,N)

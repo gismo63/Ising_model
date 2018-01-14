@@ -19,7 +19,7 @@ def metrop(matrix, iterations, neg_beta):
     while k < iterations:
         i = np.random.randint(0,N)
         j = np.random.randint(0,N)
-        if i%2:#Since the rowsn in a triangular lattice are not alligned the nearest neighbours differ based on whether it is an odd or even row
+        if i%2:#Since the rows in a triangular lattice are not alligned the nearest neighbours differ based on whether it is an odd or even row
             deltaE=2*(J*matrix[i][j]*(matrix[i][j-1]+matrix[i][(j+1)%N]+matrix[i-1][(j+1)%N]+matrix[i-1][j]+matrix[(i+1)%N][(j+1)%N]+matrix[(i+1)%N][j])+h*matrix[i][j])
         else:
             deltaE=2*(J*matrix[i][j]*(matrix[i][j-1]+matrix[i][(j+1)%N]+matrix[i-1][j-1]+matrix[i-1][j]+matrix[(i+1)%N][j-1]+matrix[(i+1)%N][j])+h*matrix[i][j])

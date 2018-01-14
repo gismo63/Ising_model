@@ -27,9 +27,9 @@ k=0
 deltaE=0
 i=0
 j=0
-spin_change=0
+spin_change=0#keeps track of the amount of spin changes
 equilib = []
-frames = 1000
+frames = 1000#number of frames in the animation
 img = []#will be a list of matrix plots
 
 

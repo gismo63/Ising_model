@@ -71,7 +71,7 @@ def tot_energy(matrix1, matrix2):
 start_time = time.time()
 
 J=1.
-N=8
+N=8#The lattice is NxNxN
 h=0
 T_c=5.8
 steps=2**20

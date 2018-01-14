@@ -11,7 +11,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import random
 import time
-from matplotlib import animation
 
 
 
@@ -49,20 +48,20 @@ start_time = time.time()#records the time when the program starts
 
 
 #these variables can all be changed, program took me around 10 minutes to run with current config
-J=1.
-columns=16
-rows=16
-h=0
-T_c=2.2692
-steps=2**16
-averageing_steps = 2**8
-num_temps = 30
+J=1.#interaction strength
+columns=16#columns in the matrix
+rows=16#rows in the matrix
+h=0#magnetic field strength
+T_c=2.2692#approximate value for critical temp
+steps=2**18#number of steps to attempt reach equilibrium
+averageing_steps = 2**10#number of configs to average over
+num_temps = 300#number of temperatures to analyse
 
 T_array = np.random.normal(T_c, 0.5, num_temps)#since the most important temperatures to calculate are those around the critical temperature a normal distribution of the termperatures is used here
 T_array = T_array[(T_array>1.5) & (T_array<3.5)]#any outliers are removed from the array
 num_temps = len(T_array)
 
-#better to define numpy arrays and  than to append to a list
+#better to define numpy arrays and than to append to a list
 energy = np.zeros(num_temps)
 magnetization = np.zeros(num_temps)
 specheat = np.zeros(num_temps)
