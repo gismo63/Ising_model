@@ -61,7 +61,7 @@ if iterations>=10000:
 
 print isingmat
 
-plt.imshow(isingmat,cmap='Greys')
+plt.imshow(isingmat,cmap='Greys', interpolation = 'none')
 
 plt.figure()
 
