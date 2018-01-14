@@ -14,11 +14,6 @@ from matplotlib import animation
 
 
 
-spin_change=0
-equilib = []
-
-
-
 
 def metrop(matrix, iterations, neg_beta):
     global spin_change
@@ -31,11 +26,8 @@ def metrop(matrix, iterations, neg_beta):
 
         if deltaE<=0:
             matrix[i] *= -1
-            spin_change += 1
         elif random.random() < np.exp(deltaE*neg_beta):
             matrix[i] *= -1
-            spin_change += 1
-        equilib.append(spin_change)
         k+=1
     return matrix
 
@@ -110,14 +102,6 @@ plt.figure()
 
 plt.plot(T_array, magsuscep, 'o')
 
-
-if steps>=10000:
-    equilib = equilib[::steps/10000]
-
-
-
-
-plt.plot(equilib)
 
 print f_matrix
 
