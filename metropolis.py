@@ -48,6 +48,16 @@ while k < iterations:
         spin_change += 1
     equilib.append(spin_change)
     k+=1
+<<<<<<< HEAD
+=======
+    #if k%10000 == 0:
+        #img.append([plt.imshow(isingmat,cmap='Greys')])
+
+
+if iterations>=10000:
+    equilib = equilib[::iterations/10000]
+
+>>>>>>> 4ab1760760eb4c4ba20c353fee84803720d2ca7a
 
 
 if iterations>=10000:
